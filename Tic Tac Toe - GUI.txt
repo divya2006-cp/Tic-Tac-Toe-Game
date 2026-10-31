@@ -1,0 +1,156 @@
+Tic Tac Toe Python.py  || Final Python Project 
+________________________________________________________________________________________________________________________
+
+import tkinter as tk
+from tkinter import messagebox
+
+
+# Main Window
+root = tk.Tk()
+root.title("Tic Tac Toe")
+root.geometry("500x550")
+
+
+# Current Player
+
+player = "X"
+
+# Store buttons
+buttons = []
+
+# Click Function
+
+def click(button):
+
+    global player
+
+    if button["text"] == "":
+        button["text"] = player
+
+        # Check Winner
+        if check_winner():
+            messagebox.showinfo(
+                "Game Over",
+                player + " Wins!"
+            )
+            return
+
+        # Check Draw
+        if check_draw():
+            messagebox.showinfo(
+                "Game Over",
+                "Draw!"
+            )
+            return
+
+        # Change Player
+        if player == "X":
+            player = "O"
+        else:
+            player = "X"
+
+# Winner Function
+def check_winner():
+
+    combinations = [
+        (0, 1, 2),
+        (3, 4, 5),
+        (6, 7, 8),
+        (0, 3, 6),
+        (1, 4, 7),
+        (2, 5, 8),
+        (0, 4, 8),
+        (2, 4, 6)
+    ]
+
+    for a, b, c in combinations:
+
+        if (
+            buttons[a]["text"] != "" and
+            buttons[a]["text"] ==
+            buttons[b]["text"] ==
+            buttons[c]["text"]
+        ):
+            return True
+    return False
+
+# Draw Function
+
+def check_draw():
+
+    for button in buttons:
+
+        if button["text"] == "":
+            return False
+
+    return True
+
+# Restart Function
+
+def restart():
+
+    global player
+
+    player = "X"
+
+    for button in buttons:
+        button["text"] = ""
+
+# Title
+
+title = tk.Label(
+    root,
+    text="TIC TAC TOE",
+    font=("Arial", 24, "bold")
+)
+
+title.pack(pady=20)
+
+# Center Frame
+
+game_frame = tk.Frame(root)
+
+game_frame.pack(
+    expand=True
+)
+
+# Create 9 Buttons
+
+for i in range(9):
+
+    button = tk.Button(
+        game_frame,
+        text="",
+        width=8,
+        height=3,
+        font=("Arial", 20, "bold"),
+        command=lambda i=i: click(buttons[i])
+    )
+
+    button.grid(
+        row=i // 3,
+        column=i % 3,
+        padx=5,
+        pady=5
+    )
+
+    buttons.append(button)
+
+
+
+# Restart Button
+
+restart_button = tk.Button(
+    root,
+    text="Restart",
+    font=("Arial", 12),
+    command=restart
+)
+
+restart_button.pack(
+    pady=20
+)
+
+
+# Run Application
+root.mainloop()
